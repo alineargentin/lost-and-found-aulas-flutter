@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:lost_and_found/models/user.dart';
 import 'package:lost_and_found/services/auth.dart';
+import 'package:lost_and_found/utils/common.dart';
 import 'package:lost_and_found/views/about_page.dart';
 import 'package:lost_and_found/views/found_page.dart';
 import 'package:lost_and_found/views/home_page.dart';
 import 'package:lost_and_found/views/profile_page.dart';
+import 'package:lost_and_found/views/root_page.dart';
 import 'package:lost_and_found/views/use_term_page.dart';
 
 class CustomDrawer extends StatefulWidget {
@@ -12,6 +15,20 @@ class CustomDrawer extends StatefulWidget {
 }
 
 class _CustomDrawerState extends State<CustomDrawer> {
+  User _user = new User();
+
+  @override
+  void initState() {
+    Auth.getUserLocal().then(_onGetUserLocalSuccess);
+    super.initState();
+  }
+
+  void _onGetUserLocalSuccess(User user) {
+    setState(() {
+      _user = user;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -63,10 +80,14 @@ class _CustomDrawerState extends State<CustomDrawer> {
           ListTile(
             leading: Icon(Icons.exit_to_app),
             title: Text('Sair'),
-            onTap: () {
-              Navigator.pop(context);
-              Auth.signOut();
-              //Navigator.of(context).pushReplacementNamed(SignInPage.routeName);
+            onTap: () async {
+              final result = await Common.showQuitDialog(context);
+              if (result) {
+                Auth.signOut();
+                Navigator.pushReplacementNamed(context, RootPage.routeName);
+              } else {
+                Navigator.pop(context);
+              }
             },
           ),
         ],
@@ -76,9 +97,10 @@ class _CustomDrawerState extends State<CustomDrawer> {
 
   Widget _showHeader() {
     return UserAccountsDrawerHeader(
-      accountName: Text('Kleber de Oliveira Andrade'),
-      accountEmail: Text('pdjkleber@gmail.com'),
-      currentAccountPicture: CircleAvatar(child: Text('K')),
+      accountName: Text(_user?.name ?? ""),
+      accountEmail: Text(_user?.email ?? ""),
+      currentAccountPicture:
+          CircleAvatar(child: Text(_user?.getInitials() ?? '')),
     );
   }
 }

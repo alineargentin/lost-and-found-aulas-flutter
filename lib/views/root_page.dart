@@ -1,10 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:lost_and_found/views/home_page.dart';
 import 'package:lost_and_found/views/sign_in_page.dart';
 
-import 'home_page.dart';
-
 class RootPage extends StatefulWidget {
+  static const String routeName = '/root';
+
   @override
   _RootPageState createState() => _RootPageState();
 }

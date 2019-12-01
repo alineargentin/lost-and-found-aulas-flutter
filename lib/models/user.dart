@@ -15,6 +15,13 @@ class User {
     this.profilePictureUrl,
   });
 
+   String getInitials() {
+    if (name != null)
+      return name.toUpperCase()[0];
+    else
+      return '?';
+  }
+
   factory User.fromDocument(DocumentSnapshot document) {
     return User.fromMap(document.data);
   }

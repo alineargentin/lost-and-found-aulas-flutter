@@ -1,5 +1,7 @@
 # Achados e Perdidos
 
+// GRUPO: ALINE ROBERTA ARGENTIN - FELIPE AMBROSINI/ DANTRICIA MARIA / LUCAS PIRES
+
 Aplicativo online de achados e perdidos usando Firebase
 
 Tutorial de criação deste app:
